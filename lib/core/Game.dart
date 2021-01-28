@@ -5,7 +5,7 @@ enum Turn { First, Second, Third }
 
 class Game {
   final int cardCount;
-  final List<GameCard> board;
+  List<GameCard> board = [];
   int tryCount = 0;
   int pairCount = 0;
   Turn turn = Turn.First;
@@ -13,10 +13,14 @@ class Game {
   int peek2;
   bool gameOver = false;
 
-  Game({@required this.cardCount})
-      : assert(cardCount % 2 == 0),
-        board = List<GameCard>.generate(cardCount,
-            (index) => GameCard(value: index, state: CardState.FaceDown));
+  Game({@required this.cardCount}) : assert(cardCount % 2 == 0) {
+    final symbols = List<int>.generate(cardCount ~/ 2, (index) => index);
+    final values = [...symbols, ...symbols];
+    values.shuffle();
+    board = values
+        .map<GameCard>((v) => GameCard(value: v, state: CardState.FaceDown))
+        .toList();
+  }
 
   List<BoardCard> checkCard(int index) {
     final card = board[index];
@@ -40,9 +44,6 @@ class Game {
         if (!isMatch()) {
           res.add(BoardCard.faceDown(peek1, board[peek1]));
           res.add(BoardCard.faceDown(peek2, board[peek2]));
-        } else {
-          board[peek1].state = CardState.Removed;
-          board[peek2].state = CardState.Removed;
         }
         turn = Turn.Second;
         peek1 = index;

@@ -68,9 +68,7 @@ class CardBase extends StatelessWidget {
         elevation: 2,
         child: InkWell(
           onTap: onTap,
-          child: Center(
-            child: child,
-          ),
+          child: child,
         ),
       ),
     );
