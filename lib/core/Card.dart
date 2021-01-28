@@ -17,11 +17,13 @@ class GameCard {
 }
 
 class BoardCard {
-  final CardState state;
+  final GameCard card;
   final int index;
 
-  const BoardCard(this.index, this.state);
+  const BoardCard(this.index, this.card);
 
-  factory BoardCard.faceUp(int index) => BoardCard(index, CardState.FaceUp);
-  factory BoardCard.faceDown(int index) => BoardCard(index, CardState.FaceDown);
+  factory BoardCard.faceUp(int index, GameCard card) =>
+      BoardCard(index, card..state = CardState.FaceUp);
+  factory BoardCard.faceDown(int index, GameCard card) =>
+      BoardCard(index, card..state = CardState.FaceDown);
 }

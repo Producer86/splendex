@@ -22,39 +22,34 @@ class Game {
     final card = board[index];
 
     if (gameOver || card.isRemoved || card.isFaceUp) {
-      return [BoardCard(index, card.state)];
+      return [BoardCard(index, card)];
     }
 
     switch (turn) {
       case Turn.First:
         turn = Turn.Second;
         peek1 = index;
-        return _turnCards([BoardCard.faceUp(index)]);
+        return [BoardCard.faceUp(index, card)];
       case Turn.Second:
         tryCount++;
         peek2 = index;
         turn = Turn.Third;
-        return _turnCards([BoardCard.faceUp(index)]);
+        return [BoardCard.faceUp(index, card)];
       case Turn.Third:
+        final res = <BoardCard>[BoardCard.faceUp(index, card)];
+        if (!isMatch()) {
+          res.add(BoardCard.faceDown(peek1, board[peek1]));
+          res.add(BoardCard.faceDown(peek2, board[peek2]));
+        } else {
+          board[peek1].state = CardState.Removed;
+          board[peek2].state = CardState.Removed;
+        }
         turn = Turn.Second;
         peek1 = index;
-        final res = <BoardCard>[BoardCard.faceUp(index)];
-        if (!isMatch()) {
-          res.add(BoardCard.faceDown(peek1));
-          res.add(BoardCard.faceDown(peek2));
-        }
-        return _turnCards(res);
-        break;
+        return res;
       default:
-        return [BoardCard(index, card.state)];
+        return [BoardCard(index, card)];
     }
-  }
-
-  List<BoardCard> _turnCards(List<BoardCard> cards) {
-    for (var card in cards) {
-      board[card.index].state = card.state;
-    }
-    return cards;
   }
 
   bool isMatch() {

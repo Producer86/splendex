@@ -3,36 +3,6 @@ import 'package:splendex/core/Game.dart';
 
 import 'Board/BoardVM.dart';
 
-class GameProvider extends InheritedWidget {
-  final Game game;
-
-  GameProvider({Key key, @required this.game, @required Widget child})
-      : assert(child != null),
-        super(key: key, child: child);
-
-  static GameProvider of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<GameProvider>();
-  }
-
-  @override
-  bool updateShouldNotify(GameProvider oldWidget) => oldWidget.game != game;
-}
-
-class BoardProvider extends InheritedWidget {
-  final Board board;
-
-  BoardProvider({Key key, @required this.board, @required Widget child})
-      : assert(child != null),
-        super(key: key, child: child);
-
-  static BoardProvider of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<BoardProvider>();
-  }
-
-  @override
-  bool updateShouldNotify(BoardProvider oldWidget) => oldWidget.board != board;
-}
-
 class GameContainer extends StatefulWidget {
   final Widget child;
 
@@ -70,4 +40,34 @@ class _GameContainerState extends State<GameContainer> {
     game.dispose();
     super.dispose();
   }
+}
+
+class GameProvider extends InheritedWidget {
+  final Game game;
+
+  GameProvider({Key key, @required this.game, @required Widget child})
+      : assert(child != null),
+        super(key: key, child: child);
+
+  static GameProvider of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<GameProvider>();
+  }
+
+  @override
+  bool updateShouldNotify(GameProvider oldWidget) => oldWidget.game != game;
+}
+
+class BoardProvider extends InheritedWidget {
+  final Board board;
+
+  BoardProvider({Key key, @required this.board, @required Widget child})
+      : assert(child != null),
+        super(key: key, child: child);
+
+  static BoardProvider of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<BoardProvider>();
+  }
+
+  @override
+  bool updateShouldNotify(BoardProvider oldWidget) => oldWidget.board != board;
 }
